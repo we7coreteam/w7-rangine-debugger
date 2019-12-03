@@ -1,0 +1,29 @@
+{
+	"name": "w7/rangine-debugger",
+	"description": " Rangine Debugger.",
+	"keywords": [
+		"rangine"
+	],
+	"license": "Apache-2.0",
+	"require": {
+		"php": ">=7.1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"W7\\Debugger\\": "src/"
+		},
+		"files": [
+			"src/Helper/Functions.php"
+		]
+	},
+	"extra": {
+		"rangine": {
+			"providers": [
+				"W7\\Debugger\\ServiceProvider"
+			]
+		}
+	},
+	"config": {
+		"sort-packages": true
+	}
+}

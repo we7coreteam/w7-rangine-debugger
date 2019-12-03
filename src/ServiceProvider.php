@@ -35,6 +35,10 @@ class ServiceProvider extends ProviderAbstract{
 	 * @return void
 	 */
 	public function register() {
+		if ((ENV & DEBUG) != DEBUG) {
+			return false;
+		}
+
 		$this->registerLog();
 		$this->registerListener();
 	}

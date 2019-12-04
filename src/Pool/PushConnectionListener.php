@@ -14,6 +14,6 @@ class PushConnectionListener extends PoolListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' release push connection , count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
+		itrace($event->type, $event->name . ' release push connection , count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
 	}
 }

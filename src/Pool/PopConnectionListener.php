@@ -14,6 +14,6 @@ class PopConnectionListener extends PoolListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' get by queue , count ' . $event->pool->getIdleCount());
+		itrace($event->type, $event->name . ' get by queue , count ' . $event->pool->getIdleCount());
 	}
 }

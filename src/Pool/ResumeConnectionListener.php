@@ -14,6 +14,6 @@ class ResumeConnectionListener extends PoolListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' resume connection , count ' . $event->pool->getIdleCount());
+		itrace($event->type, $event->name . ' resume connection , count ' . $event->pool->getIdleCount());
 	}
 }

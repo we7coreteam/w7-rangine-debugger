@@ -14,6 +14,6 @@ class SuspendConnectionListener extends PoolListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' suspend connection , count ' . $event->pool->getIdleCount() . '. wait count ' . $event->pool->getWaitCount());
+		itrace($event->type, $event->name . ' suspend connection , count ' . $event->pool->getIdleCount() . '. wait count ' . $event->pool->getWaitCount());
 	}
 }

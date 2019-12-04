@@ -14,6 +14,6 @@ class MakeConnectionListener extends DatabaseListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' create connection without pool');
+		itrace('database', $event->name . ' create connection without pool');
 	}
 }

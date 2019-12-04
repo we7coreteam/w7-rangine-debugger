@@ -15,6 +15,6 @@ class MakeConnectionListener extends ListenerAbstract {
 	}
 
 	protected function log(MakeConnectionEvent $event) {
-		itrace($event->name . ' create connection without pool');
+		itrace('cache', $event->name . ' create connection without pool');
 	}
 }

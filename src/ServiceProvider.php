@@ -14,11 +14,14 @@ use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
 use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
+use W7\Core\Route\Event\RouteMatchedEvent;
+use W7\Core\Server\SwooleEvent;
 use W7\Debugger\Cache\MakeConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
 use W7\Debugger\Database\TransactionCommittedListener;
 use W7\Debugger\Database\TransactionRolledBackListener;
+use W7\Debugger\Log\TraceProcessor;
 use W7\Debugger\Pool\PopConnectionListener;
 use W7\Debugger\Pool\PushConnectionListener;
 use W7\Debugger\Pool\ResumeConnectionListener;
@@ -27,6 +30,9 @@ use W7\Debugger\Database\MakeConnectionListener as MakeDatabaseConnectionListene
 use W7\Core\Database\Event\MakeConnectionEvent as MakeDatabaseConnectionEvent;
 use W7\Core\Pool\Event\MakeConnectionEvent as PoolMakeConnectionEvent;
 use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
+use W7\Debugger\Request\AfterRequestListener;
+use W7\Debugger\Request\BeforeRequestListener;
+use W7\Debugger\Route\RouteMatchedListener;
 
 class ServiceProvider extends ProviderAbstract{
 	/**
@@ -52,6 +58,7 @@ class ServiceProvider extends ProviderAbstract{
 			'path' => RUNTIME_PATH . '/logs/trace.log',
 			'level' => 'debug'
 		]);
+		ilogger()->channel('rangine-debugger')->pushProcessor(new TraceProcessor());
 	}
 
 	private function registerListener() {
@@ -60,6 +67,8 @@ class ServiceProvider extends ProviderAbstract{
 		 */
 		$eventDispatcher = iloader()->get(EventDispatcher::class);
 
+		$eventDispatcher->listen(SwooleEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
+		$eventDispatcher->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
 		$eventDispatcher->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
 		$eventDispatcher->listen(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
 		$eventDispatcher->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
@@ -71,6 +80,7 @@ class ServiceProvider extends ProviderAbstract{
 		$eventDispatcher->listen(PushConnectionEvent::class, PushConnectionListener::class);
 		$eventDispatcher->listen(ResumeConnectionEvent::class, ResumeConnectionListener::class);
 		$eventDispatcher->listen(SuspendConnectionEvent::class, SuspendConnectionListener::class);
+		$eventDispatcher->listen(SwooleEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
 	}
 
 	/**

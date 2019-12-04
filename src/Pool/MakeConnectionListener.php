@@ -14,6 +14,6 @@ class MakeConnectionListener extends PoolListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace($event->name . ' create connection , count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
+		itrace($event->type, $event->name . ' create connection , count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
 	}
 }

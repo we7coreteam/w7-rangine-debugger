@@ -23,6 +23,6 @@ abstract class DatabaseListenerAbstract extends ListenerAbstract {
 
 			$sql = preg_replace($regex, $binding, $sql, 1);
 		}
-		itrace('connection ' . $event->connectionName . ', ' . $sql);
+		itrace('database', 'connection ' . $event->connectionName . ', ' . $sql);
 	}
 }

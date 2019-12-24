@@ -21,5 +21,7 @@ class BeforeRequestListener extends ListenerAbstract {
 
 	protected function log(Request $request) {
 		itrace('begin-request', 'method: ' . $request->getMethod() . ', url: ' . $request->getUri()->getPath() . ', ip: ' . getClientIp() . ', time: ' . date('Y-m-d H:i:s'));
+		itrace('request-header', serialize($request->getHeaders()));
+		itrace('request-data', 'post: ' . serialize($request->getParsedBody()) . ', query: ' . serialize($request->getQueryParams()));
 	}
 }

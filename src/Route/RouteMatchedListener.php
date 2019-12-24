@@ -22,10 +22,8 @@ class RouteMatchedListener extends ListenerAbstract {
 		array_walk_recursive($event->route['middleware'], function ($middleware) use (&$middleWares) {
 			$middleWares[] = $middleware;
 		});
-		itrace('route', "\n" . '    name: ' . $event->route['name'] . "\n" .
-			'    module: ' . $event->route['module'] . "\n" .
-			'    handler: ' . $handler . "\n" .
-			'    args: ' . build_query($event->route['args']) . "\n" .
-			'    middleware: ' . implode(',', $middleWares));
+
+		itrace('route', 'name: ' . $event->route['name'] . ', module: ' . $event->route['module'] . ', handler: ' . $handler);
+		itrace('middleware', implode(',', $middleWares));
 	}
 }

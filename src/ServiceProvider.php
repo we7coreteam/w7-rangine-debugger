@@ -16,6 +16,7 @@ use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
 use W7\Core\Route\Event\RouteMatchedEvent;
 use W7\Core\Server\SwooleEvent;
+use W7\Core\Session\Event\SessionStartEvent;
 use W7\Debugger\Cache\MakeConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
@@ -33,6 +34,7 @@ use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
 use W7\Debugger\Request\AfterRequestListener;
 use W7\Debugger\Request\BeforeRequestListener;
 use W7\Debugger\Route\RouteMatchedListener;
+use W7\Debugger\Session\SessionStartListener;
 
 class ServiceProvider extends ProviderAbstract{
 	/**
@@ -69,6 +71,7 @@ class ServiceProvider extends ProviderAbstract{
 
 		$eventDispatcher->listen(SwooleEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
 		$eventDispatcher->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
+		$eventDispatcher->listen(SessionStartEvent::class, SessionStartListener::class);
 		$eventDispatcher->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
 		$eventDispatcher->listen(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
 		$eventDispatcher->listen(QueryExecutedEvent::class, QueryExecutedListener::class);

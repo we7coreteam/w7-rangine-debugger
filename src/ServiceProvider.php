@@ -15,7 +15,7 @@ use W7\Core\Pool\Event\ResumeConnectionEvent;
 use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
 use W7\Core\Route\Event\RouteMatchedEvent;
-use W7\Core\Server\SwooleEvent;
+use W7\Core\Server\ServerEvent;
 use W7\Core\Session\Event\SessionStartEvent;
 use W7\Debugger\Cache\MakeConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
@@ -69,7 +69,7 @@ class ServiceProvider extends ProviderAbstract{
 		 */
 		$eventDispatcher = iloader()->get(EventDispatcher::class);
 
-		$eventDispatcher->listen(SwooleEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
+		$eventDispatcher->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
 		$eventDispatcher->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
 		$eventDispatcher->listen(SessionStartEvent::class, SessionStartListener::class);
 		$eventDispatcher->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
@@ -83,7 +83,7 @@ class ServiceProvider extends ProviderAbstract{
 		$eventDispatcher->listen(PushConnectionEvent::class, PushConnectionListener::class);
 		$eventDispatcher->listen(ResumeConnectionEvent::class, ResumeConnectionListener::class);
 		$eventDispatcher->listen(SuspendConnectionEvent::class, SuspendConnectionListener::class);
-		$eventDispatcher->listen(SwooleEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
+		$eventDispatcher->listen(ServerEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
 	}
 
 	/**

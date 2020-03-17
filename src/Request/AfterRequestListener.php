@@ -15,7 +15,7 @@ class AfterRequestListener extends ListenerAbstract {
 			$cookies[] = [
 				'name' => $cookie->getName(),
 				'value' => $cookie->getValue() ? : 1,
-				'expire' => $cookie->getExpires(),
+				'expire' => $cookie->getExpiresTime(),
 				'path' => $cookie->getPath(),
 				'domain' => $cookie->getDomain(),
 				'secure' => $cookie->isSecure(),

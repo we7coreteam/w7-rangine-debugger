@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * WeEngine Api System
+ *
+ * (c) We7Team 2019 <https://www.w7.cc>
+ *
+ * This is not a free software
+ * Using it under the license terms
+ * visited https://www.w7.cc for more details
+ */
+
 namespace W7\Debugger;
 
 use W7\Core\Cache\Event\MakeConnectionEvent;
@@ -7,7 +17,6 @@ use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
 use W7\Core\Database\Event\TransactionCommittedEvent;
 use W7\Core\Database\Event\TransactionRolledBackEvent;
-use W7\Core\Dispatcher\EventDispatcher;
 use W7\Core\Log\LogManager;
 use W7\Core\Pool\Event\PopConnectionEvent;
 use W7\Core\Pool\Event\PushConnectionEvent;
@@ -36,7 +45,7 @@ use W7\Debugger\Request\BeforeRequestListener;
 use W7\Debugger\Route\RouteMatchedListener;
 use W7\Debugger\Session\SessionStartListener;
 
-class ServiceProvider extends ProviderAbstract{
+class ServiceProvider extends ProviderAbstract {
 	/**
 	 * Register any application services.
 	 *
@@ -64,26 +73,21 @@ class ServiceProvider extends ProviderAbstract{
 	}
 
 	private function registerListener() {
-		/**
-		 * @var EventDispatcher $eventDispatcher
-		 */
-		$eventDispatcher = iloader()->get(EventDispatcher::class);
-
-		$eventDispatcher->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
-		$eventDispatcher->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
-		$eventDispatcher->listen(SessionStartEvent::class, SessionStartListener::class);
-		$eventDispatcher->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
-		$eventDispatcher->listen(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
-		$eventDispatcher->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
-		$eventDispatcher->listen(TransactionBeginningEvent::class, TransactionBeginningListener::class);
-		$eventDispatcher->listen(TransactionCommittedEvent::class, TransactionCommittedListener::class);
-		$eventDispatcher->listen(TransactionRolledBackEvent::class, TransactionRolledBackListener::class);
-		$eventDispatcher->listen(PoolMakeConnectionEvent::class, PoolMakeConnectionListener::class);
-		$eventDispatcher->listen(PopConnectionEvent::class, PopConnectionListener::class);
-		$eventDispatcher->listen(PushConnectionEvent::class, PushConnectionListener::class);
-		$eventDispatcher->listen(ResumeConnectionEvent::class, ResumeConnectionListener::class);
-		$eventDispatcher->listen(SuspendConnectionEvent::class, SuspendConnectionListener::class);
-		$eventDispatcher->listen(ServerEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
+		$this->registerEvent(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
+		$this->registerEvent(RouteMatchedEvent::class, RouteMatchedListener::class);
+		$this->registerEvent(SessionStartEvent::class, SessionStartListener::class);
+		$this->registerEvent(MakeConnectionEvent::class, MakeConnectionListener::class);
+		$this->registerEvent(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
+		$this->registerEvent(QueryExecutedEvent::class, QueryExecutedListener::class);
+		$this->registerEvent(TransactionBeginningEvent::class, TransactionBeginningListener::class);
+		$this->registerEvent(TransactionCommittedEvent::class, TransactionCommittedListener::class);
+		$this->registerEvent(TransactionRolledBackEvent::class, TransactionRolledBackListener::class);
+		$this->registerEvent(PoolMakeConnectionEvent::class, PoolMakeConnectionListener::class);
+		$this->registerEvent(PopConnectionEvent::class, PopConnectionListener::class);
+		$this->registerEvent(PushConnectionEvent::class, PushConnectionListener::class);
+		$this->registerEvent(ResumeConnectionEvent::class, ResumeConnectionListener::class);
+		$this->registerEvent(SuspendConnectionEvent::class, SuspendConnectionListener::class);
+		$this->registerEvent(ServerEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
 	}
 
 	/**
@@ -92,6 +96,5 @@ class ServiceProvider extends ProviderAbstract{
 	 * @return void
 	 */
 	public function boot() {
-
 	}
 }

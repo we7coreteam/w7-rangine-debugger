@@ -1,10 +1,24 @@
 <?php
 
+/**
+ * WeEngine Api System
+ *
+ * (c) We7Team 2019 <https://www.w7.cc>
+ *
+ * This is not a free software
+ * Using it under the license terms
+ * visited https://www.w7.cc for more details
+ */
+
 namespace W7\Debugger\Database;
 
+use Illuminate\Database\Events\ConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
 
 abstract class DatabaseListenerAbstract extends ListenerAbstract {
+	/**
+	 * @param ConnectionEvent $event
+	 */
 	protected function log($event) {
 		$sql = $event->sql ?? '';
 		$bindings = (array) (empty($event->bindings) ? [] : $event->bindings);
@@ -18,7 +32,7 @@ abstract class DatabaseListenerAbstract extends ListenerAbstract {
 
 			// Mimic bindValue and only quote non-integer and non-float data types
 			if (!is_int($binding) && !is_float($binding)) {
-				$binding = $event->connection->getReadPdo()->quote($binding);
+				$binding = $event->connection->getActiveConnection()->quote($binding);
 			}
 
 			$sql = preg_replace($regex, $binding, $sql, 1);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -64,7 +64,7 @@ class ServiceProvider extends ProviderAbstract {
 		/**
 		 * @var LogManager $logManager
 		 */
-		$logManager = iloader()->get(LogManager::class);
+		$logManager = icontainer()->singleton(LogManager::class);
 		$logManager->addChannel('rangine-debugger', 'stream', [
 			'path' => RUNTIME_PATH . '/logs/trace.log',
 			'level' => 'debug'

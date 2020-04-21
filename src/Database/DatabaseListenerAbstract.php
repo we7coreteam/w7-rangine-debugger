@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -18,8 +18,12 @@ use W7\Core\Listener\ListenerAbstract;
 abstract class DatabaseListenerAbstract extends ListenerAbstract {
 	/**
 	 * @param ConnectionEvent $event
+	 * @return  bool
 	 */
 	protected function log($event) {
+		if ($event->connection->pretending()) {
+			return true;
+		}
 		$sql = $event->sql ?? '';
 		$bindings = (array) (empty($event->bindings) ? [] : $event->bindings);
 		foreach ($bindings as $key => $binding) {

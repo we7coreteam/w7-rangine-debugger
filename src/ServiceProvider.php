@@ -64,7 +64,7 @@ class ServiceProvider extends ProviderAbstract {
 		/**
 		 * @var LogManager $logManager
 		 */
-		$logManager = $this->getContainer()->singleton(LogManager::class);
+		$logManager = $this->container->singleton(LogManager::class);
 		$logManager->addChannel('rangine-debugger', 'stream', [
 			'path' => RUNTIME_PATH . '/logs/trace.log',
 			'level' => 'debug'

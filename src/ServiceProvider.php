@@ -17,7 +17,6 @@ use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
 use W7\Core\Database\Event\TransactionCommittedEvent;
 use W7\Core\Database\Event\TransactionRolledBackEvent;
-use W7\Core\Log\LogManager;
 use W7\Core\Pool\Event\PopConnectionEvent;
 use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
@@ -61,15 +60,15 @@ class ServiceProvider extends ProviderAbstract {
 	}
 
 	private function registerLog() {
-		/**
-		 * @var LogManager $logManager
-		 */
-		$logManager = $this->container->singleton(LogManager::class);
-		$logManager->addChannel('rangine-debugger', 'stream', [
-			'path' => RUNTIME_PATH . '/logs/trace.log',
-			'level' => 'debug'
-		]);
-		ilogger()->channel('rangine-debugger')->pushProcessor(new TraceProcessor());
+		if (empty($this->config->get('log.channel.rangine-debugger'))) {
+			$this->config->set('log.channel.rangine-debugger', [
+				'driver' => 'stream',
+				'path' => RUNTIME_PATH . '/logs/trace.log',
+				'level' => 'debug'
+			]);
+		}
+
+		$this->logger->channel('rangine-debugger')->pushProcessor(new TraceProcessor());
 	}
 
 	private function registerListener() {

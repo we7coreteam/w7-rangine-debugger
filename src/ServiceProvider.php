@@ -61,7 +61,7 @@ class ServiceProvider extends ProviderAbstract {
 
 	private function registerLog() {
 		if (empty($this->config->get('log.channel.rangine-debugger'))) {
-			$this->registerLoggerChannel('rangine-debugger', 'stream', [
+			$this->registerLogger('rangine-debugger', 'stream', [
 				'path' => RUNTIME_PATH . '/logs/trace.log',
 				'level' => 'debug'
 			]);

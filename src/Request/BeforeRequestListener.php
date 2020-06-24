@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * Rangine debugger
+ *
+ * (c) We7Team 2019 <https://www.w7.cc>
+ *
+ * This is not a free software
+ * Using it under the license terms
+ * visited https://www.w7.cc for more details
+ */
+
 namespace W7\Debugger\Request;
 
+use W7\Core\Facades\Context;
 use W7\Core\Listener\ListenerAbstract;
 use W7\Http\Message\Server\Request;
 
@@ -11,10 +22,10 @@ class BeforeRequestListener extends ListenerAbstract {
 		 * @var Request $request
 		 */
 		$request = $params[0];
-		icontext()->setRequest($request);
-		icontext()->setContextDataByKey('trace_group', '[ url: ' . $request->getUri()->getPath() . ' ]');
-		icontext()->setContextDataByKey('memory_usage', memory_get_usage());
-		icontext()->setContextDataByKey('time', microtime(true));
+		Context::setRequest($request);
+		Context::setContextDataByKey('trace_group', '[ url: ' . $request->getUri()->getPath() . ' ]');
+		Context::setContextDataByKey('memory_usage', memory_get_usage());
+		Context::setContextDataByKey('time', microtime(true));
 
 		$this->log($request);
 	}

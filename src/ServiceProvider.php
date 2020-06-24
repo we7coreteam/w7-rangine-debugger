@@ -17,6 +17,7 @@ use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
 use W7\Core\Database\Event\TransactionCommittedEvent;
 use W7\Core\Database\Event\TransactionRolledBackEvent;
+use W7\Core\Log\Processor\SwooleProcessor;
 use W7\Core\Pool\Event\PopConnectionEvent;
 use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
@@ -64,7 +65,7 @@ class ServiceProvider extends ProviderAbstract {
 			$this->registerLogger('rangine-debugger', 'stream', [
 				'path' => RUNTIME_PATH . '/logs/trace.log',
 				'level' => 'debug',
-				'processor' => [TraceProcessor::class]
+				'processor' => [SwooleProcessor::class, TraceProcessor::class]
 			]);
 		}
 	}

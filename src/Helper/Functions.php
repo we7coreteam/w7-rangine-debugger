@@ -23,19 +23,13 @@ if (!function_exists('itrace')) {
 if (!function_exists('idd')) {
 	function idd(...$vars) {
 		ob_start();
-		if (class_exists(VarDumper::class)) {
-			$_SERVER['VAR_DUMPER_FORMAT'] = 'html';
-			foreach ($vars as $var) {
-				VarDumper::dump($var);
-			}
-			VarDumper::setHandler(null);
-		} else {
-			foreach ($vars as $var) {
-				echo '<pre>';
-				print_r($var);
-				echo '</pre>';
-			}
+
+		$_SERVER['VAR_DUMPER_FORMAT'] = 'html';
+		foreach ($vars as $var) {
+			VarDumper::dump($var);
 		}
+		VarDumper::setHandler(null);
+
 		$content = ob_get_clean();
 
 		throw new DumpException($content);

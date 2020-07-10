@@ -10,9 +10,34 @@
  * visited https://www.w7.cc for more details
  */
 
+use Symfony\Component\VarDumper\VarDumper;
+use W7\Core\Exception\DumpException;
+
 if (!function_exists('itrace')) {
 	function itrace($group, $message, $context = []) {
 		$context['trace_group'] = $group;
 		\W7\Core\Facades\Logger::channel('rangine-debugger')->debug($message, $context);
+	}
+}
+
+if (!function_exists('idd')) {
+	function idd(...$vars) {
+		ob_start();
+		if (class_exists(VarDumper::class)) {
+			$_SERVER['VAR_DUMPER_FORMAT'] = 'html';
+			foreach ($vars as $var) {
+				VarDumper::dump($var);
+			}
+			VarDumper::setHandler(null);
+		} else {
+			foreach ($vars as $var) {
+				echo '<pre>';
+				print_r($var);
+				echo '</pre>';
+			}
+		}
+		$content = ob_get_clean();
+
+		throw new DumpException($content);
 	}
 }

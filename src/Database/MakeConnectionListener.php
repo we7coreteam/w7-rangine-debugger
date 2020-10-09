@@ -24,6 +24,6 @@ class MakeConnectionListener extends DatabaseListenerAbstract {
 	}
 
 	protected function log($event) {
-		itrace('database', ' create ' . $event->name . ' connection');
+		itrace('database', 'create ' . $event->name . ' connection');
 	}
 }

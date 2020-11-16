@@ -12,7 +12,6 @@
 
 namespace W7\Debugger\Request;
 
-use W7\Core\Facades\Context;
 use W7\Core\Listener\ListenerAbstract;
 
 class AfterRequestListener extends ListenerAbstract {
@@ -22,7 +21,7 @@ class AfterRequestListener extends ListenerAbstract {
 
 	public function getCookies() {
 		$cookies = [];
-		foreach ((array)Context::getResponse()->getCookies() as $name => $cookie) {
+		foreach ((array)$this->getContext()->getResponse()->getCookies() as $name => $cookie) {
 			$cookies[] = [
 				'name' => $cookie->getName(),
 				'value' => $cookie->getValue() ? : 1,
@@ -38,13 +37,13 @@ class AfterRequestListener extends ListenerAbstract {
 	}
 
 	protected function log() {
-		$beginMemory = Context::getContextDataByKey('memory_usage');
+		$beginMemory = $this->getContext()->getContextDataByKey('memory_usage');
 		$memoryUsage = memory_get_usage() - $beginMemory;
-		$time = round(microtime(true) - Context::getContextDataByKey('time'), 3);
+		$time = round(microtime(true) - $this->getContext()->getContextDataByKey('time'), 3);
 
-		itrace('response-header', serialize(Context::getResponse()->getHeaders()));
+		itrace('response-header', serialize($this->getContext()->getResponse()->getHeaders()));
 		itrace('response-cookies', serialize($this->getCookies()));
-		itrace('response-content', Context::getResponse()->getBody()->getContents());
+		itrace('response-content', $this->getContext()->getResponse()->getBody()->getContents());
 		itrace('end-request', 'memory_usage: ' . round($memoryUsage/1024/1024, 2).'MB' . ', time: ' . $time . 's');
 	}
 }

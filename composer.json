@@ -8,11 +8,11 @@
 	"license": "Apache-2.0",
 	"require": {
 		"php": ">=7.1.0",
+		"w7/rangine": "*",
 		"symfony/var-dumper": "^4.1"
 	},
 	"require-dev": {
-		"w7/php-cs-fixer": "^1.0",
-		"w7/rangine": "~2.0"
+		"w7/php-cs-fixer": "*"
 	},
 	"autoload": {
 		"psr-4": {

@@ -11,12 +11,14 @@
  */
 
 use Symfony\Component\VarDumper\VarDumper;
+use W7\App;
+use W7\Contract\Logger\LoggerFactoryInterface;
 use W7\Core\Exception\DumpException;
 
 if (!function_exists('itrace')) {
 	function itrace($group, $message, $context = []) {
 		$context['trace_group'] = $group;
-		\W7\Core\Facades\Logger::channel('rangine-debugger')->debug($message, $context);
+		App::getApp()->getContainer()->singleton(LoggerFactoryInterface::class)->channel('rangine-debugger')->debug($message, $context);
 	}
 }
 

@@ -12,9 +12,11 @@
 
 namespace W7\Debugger\Log;
 
-use W7\Core\Facades\Context;
+use W7\Core\Helper\Traiter\AppCommonTrait;
 
 class TraceProcessor {
+	use AppCommonTrait;
+
 	public function __invoke(array $record) {
 		if (!empty($record['context']['trace_group'])) {
 			$record['channel'] = $record['context']['trace_group'];
@@ -22,8 +24,8 @@ class TraceProcessor {
 		if (isset($record['context']['trace_group'])) {
 			unset($record['context']['trace_group']);
 		}
-		if (Context::getContextDataByKey('trace_group')) {
-			$record['channel'] = Context::getContextDataByKey('trace_group') . ' ' . $record['channel'];
+		if ($this->getContext()->getContextDataByKey('trace_group')) {
+			$record['channel'] = $this->getContext()->getContextDataByKey('trace_group') . ' ' . $record['channel'];
 		}
 
 		return $record;

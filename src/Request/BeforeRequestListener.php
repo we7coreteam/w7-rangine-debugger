@@ -12,7 +12,6 @@
 
 namespace W7\Debugger\Request;
 
-use W7\Core\Facades\Context;
 use W7\Core\Listener\ListenerAbstract;
 use W7\Http\Message\Server\Request;
 
@@ -22,10 +21,10 @@ class BeforeRequestListener extends ListenerAbstract {
 		 * @var Request $request
 		 */
 		$request = $params[0];
-		Context::setRequest($request);
-		Context::setContextDataByKey('trace_group', '[ url: ' . $request->getUri()->getPath() . ' ]');
-		Context::setContextDataByKey('memory_usage', memory_get_usage());
-		Context::setContextDataByKey('time', microtime(true));
+		$this->getContext()->setRequest($request);
+		$this->getContext()->setContextDataByKey('trace_group', '[ url: ' . $request->getUri()->getPath() . ' ]');
+		$this->getContext()->setContextDataByKey('memory_usage', memory_get_usage());
+		$this->getContext()->setContextDataByKey('time', microtime(true));
 
 		$this->log($request);
 	}

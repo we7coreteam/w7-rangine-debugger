@@ -70,20 +70,20 @@ class ServiceProvider extends ProviderAbstract {
 	}
 
 	private function registerListener() {
-		$this->registerEvent(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
-		$this->registerEvent(RouteMatchedEvent::class, RouteMatchedListener::class);
-		$this->registerEvent(MakeConnectionEvent::class, MakeConnectionListener::class);
-		$this->registerEvent(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
-		$this->registerEvent(QueryExecutedEvent::class, QueryExecutedListener::class);
-		$this->registerEvent(TransactionBeginningEvent::class, TransactionBeginningListener::class);
-		$this->registerEvent(TransactionCommittedEvent::class, TransactionCommittedListener::class);
-		$this->registerEvent(TransactionRolledBackEvent::class, TransactionRolledBackListener::class);
-		$this->registerEvent(PoolMakeConnectionEvent::class, PoolMakeConnectionListener::class);
-		$this->registerEvent(PopConnectionEvent::class, PopConnectionListener::class);
-		$this->registerEvent(PushConnectionEvent::class, PushConnectionListener::class);
-		$this->registerEvent(ResumeConnectionEvent::class, ResumeConnectionListener::class);
-		$this->registerEvent(SuspendConnectionEvent::class, SuspendConnectionListener::class);
-		$this->registerEvent(ServerEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
+		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
+		$this->getEventDispatcher()->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
+		$this->getEventDispatcher()->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
+		$this->getEventDispatcher()->listen(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
+		$this->getEventDispatcher()->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
+		$this->getEventDispatcher()->listen(TransactionBeginningEvent::class, TransactionBeginningListener::class);
+		$this->getEventDispatcher()->listen(TransactionCommittedEvent::class, TransactionCommittedListener::class);
+		$this->getEventDispatcher()->listen(TransactionRolledBackEvent::class, TransactionRolledBackListener::class);
+		$this->getEventDispatcher()->listen(PoolMakeConnectionEvent::class, PoolMakeConnectionListener::class);
+		$this->getEventDispatcher()->listen(PopConnectionEvent::class, PopConnectionListener::class);
+		$this->getEventDispatcher()->listen(PushConnectionEvent::class, PushConnectionListener::class);
+		$this->getEventDispatcher()->listen(ResumeConnectionEvent::class, ResumeConnectionListener::class);
+		$this->getEventDispatcher()->listen(SuspendConnectionEvent::class, SuspendConnectionListener::class);
+		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_AFTER_REQUEST, AfterRequestListener::class);
 	}
 
 	/**

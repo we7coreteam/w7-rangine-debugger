@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -14,6 +14,7 @@ namespace W7\Debugger\Route;
 
 use W7\Core\Listener\ListenerAbstract;
 use W7\Core\Route\Event\RouteMatchedEvent;
+use W7\Core\Route\Route;
 
 class RouteMatchedListener extends ListenerAbstract {
 	public function run(...$params) {
@@ -26,13 +27,24 @@ class RouteMatchedListener extends ListenerAbstract {
 	}
 
 	protected function log(RouteMatchedEvent $event) {
-		$handler = $event->route['controller'] instanceof \Closure ? 'closure' : $event->route['controller'] . '@' . $event->route['method'];
+		if ($event->route instanceof Route) {
+			$routeName = $event->route->name;
+			$routeMiddleware = $event->route->getMiddleware();
+			$routeModule = $event->route->module;
+			$routeHandler = $event->route->handler instanceof \Closure ? 'closure' : implode('@', $event->route->handler);
+		} else {
+			$routeName = $event->route['name'];
+			$routeMiddleware = $event->route['middleware'];
+			$routeModule = $event->route['module'];
+			$routeHandler = $event->route['controller'] instanceof \Closure ? 'closure' : $event->route['controller'] . '@' . $event->route['method'];
+		}
+
 		$middleWares = [];
-		array_walk_recursive($event->route['middleware'], function ($middleware) use (&$middleWares) {
+		array_walk_recursive($routeMiddleware, function ($middleware) use (&$middleWares) {
 			$middleWares[] = $middleware;
 		});
 
-		itrace('route', 'name: ' . $event->route['name'] . ', module: ' . $event->route['module'] . ', handler: ' . $handler);
+		itrace('route', 'name: ' . $routeName . ', module: ' . $routeModule . ', handler: ' . $routeHandler);
 		itrace('middleware', implode(',', $middleWares));
 	}
 }

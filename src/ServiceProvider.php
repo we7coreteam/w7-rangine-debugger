@@ -61,7 +61,7 @@ class ServiceProvider extends ProviderAbstract {
 	private function registerLog() {
 		if (empty($this->config->get('log.channel.rangine-debugger'))) {
 			$this->registerLogger('rangine-debugger', [
-				'driver' => $this->config->get('handler.log.stream'),
+				'driver' => $this->config->get('handler.log.daily'),
 				'path' => RUNTIME_PATH . '/logs/trace.log',
 				'level' => 'debug',
 				'processor' => [SwooleProcessor::class, TraceProcessor::class]

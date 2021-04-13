@@ -64,6 +64,7 @@ class ServiceProvider extends ProviderAbstract {
 				'driver' => $this->config->get('handler.log.daily'),
 				'path' => RUNTIME_PATH . '/logs/trace.log',
 				'level' => 'debug',
+				'days' => 1,
 				'processor' => [SwooleProcessor::class, TraceProcessor::class]
 			]);
 		}

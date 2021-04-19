@@ -12,6 +12,7 @@
 
 namespace W7\Debugger;
 
+use W7\App;
 use W7\Core\Cache\Event\MakeConnectionEvent;
 use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
@@ -62,7 +63,7 @@ class ServiceProvider extends ProviderAbstract {
 		if (empty($this->config->get('log.channel.rangine-debugger'))) {
 			$this->registerLogger('rangine-debugger', [
 				'driver' => $this->config->get('handler.log.daily'),
-				'path' => RUNTIME_PATH . '/logs/trace.log',
+				'path' => App::getApp()->getRuntimePath() . '/logs/trace.log',
 				'level' => 'debug',
 				'days' => 1,
 				'processor' => [SwooleProcessor::class, TraceProcessor::class]

@@ -39,10 +39,9 @@ class RouteMatchedListener extends ListenerAbstract {
 			$routeHandler = $event->route['controller'] instanceof \Closure ? 'closure' : $event->route['controller'] . '@' . $event->route['method'];
 		}
 
-		$middleWares = [];
-		array_walk_recursive($routeMiddleware, function ($middleware) use (&$middleWares) {
-			$middleWares[] = $middleware;
-		});
+		foreach ($routeMiddleware as $item) {
+			$middleWares[] = $item['class'] . ':arg[' . implode(',', $item['arg']) . ']';
+		}
 
 		itrace('route', 'name: ' . $routeName . ', module: ' . $routeModule . ', handler: ' . $routeHandler);
 		itrace('middleware', implode(',', $middleWares));

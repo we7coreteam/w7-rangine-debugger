@@ -39,6 +39,7 @@ class RouteMatchedListener extends ListenerAbstract {
 			$routeHandler = $event->route['controller'] instanceof \Closure ? 'closure' : $event->route['controller'] . '@' . $event->route['method'];
 		}
 
+		$middleWares = [];
 		foreach ($routeMiddleware as $item) {
 			$middleWares[] = $item['class'] . ':arg[' . implode(',', $item['arg']) . ']';
 		}

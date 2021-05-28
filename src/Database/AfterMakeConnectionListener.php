@@ -12,12 +12,12 @@
 
 namespace W7\Debugger\Database;
 
-use W7\Core\Database\Event\MakeConnectionEvent;
+use W7\Core\Database\Event\AfterMakeConnectionEvent;
 
-class MakeConnectionListener extends DatabaseListenerAbstract {
+class AfterMakeConnectionListener extends DatabaseListenerAbstract {
 	public function run(...$params) {
 		/**
-		 * @var MakeConnectionEvent $event
+		 * @var AfterMakeConnectionEvent $event
 		 */
 		$event = $params[0];
 		$this->log($event);

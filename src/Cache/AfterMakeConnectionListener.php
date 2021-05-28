@@ -12,19 +12,19 @@
 
 namespace W7\Debugger\Cache;
 
-use W7\Core\Cache\Event\MakeConnectionEvent;
+use W7\Core\Cache\Event\AfterMakeConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
 
-class MakeConnectionListener extends ListenerAbstract {
+class AfterMakeConnectionListener extends ListenerAbstract {
 	public function run(...$params) {
 		/**
-		 * @var MakeConnectionEvent $event
+		 * @var AfterMakeConnectionEvent $event
 		 */
 		$event = $params[0];
 		$this->log($event);
 	}
 
-	protected function log(MakeConnectionEvent $event) {
+	protected function log(AfterMakeConnectionEvent $event) {
 		itrace('cache', 'create ' . $event->name . ' connection');
 	}
 }

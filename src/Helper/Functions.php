@@ -18,7 +18,7 @@ use W7\Core\Exception\DumpException;
 if (!function_exists('itrace')) {
 	function itrace($group, $message, $context = []) {
 		$context['trace_group'] = $group;
-		App::getApp()->getContainer()->singleton(LoggerFactoryInterface::class)->channel('rangine-debugger')->debug($message, $context);
+		App::getApp()->getContainer()->get(LoggerFactoryInterface::class)->channel('rangine-debugger')->debug($message, $context);
 	}
 }
 

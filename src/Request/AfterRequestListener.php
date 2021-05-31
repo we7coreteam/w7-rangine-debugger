@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -13,10 +13,17 @@
 namespace W7\Debugger\Request;
 
 use W7\Core\Listener\ListenerAbstract;
+use W7\Debugger\DebuggerTrait;
 
 class AfterRequestListener extends ListenerAbstract {
+	use DebuggerTrait;
+
 	public function run(...$params) {
-		$this->log();
+		$debugger = $this->getDebugger();
+		$debugger->addTag('response-header', $this->getContext()->getResponse()->getHeaders());
+		$debugger->addTag('response-cookie', $this->getCookies());
+		$debugger->addTag('response-content', $this->getContext()->getResponse()->getBody()->getContents());
+		$debugger->handle(' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n");
 	}
 
 	public function getCookies() {
@@ -34,16 +41,5 @@ class AfterRequestListener extends ListenerAbstract {
 		}
 
 		return $cookies;
-	}
-
-	protected function log() {
-		$beginMemory = $this->getContext()->getContextDataByKey('memory_usage');
-		$memoryUsage = memory_get_usage() - $beginMemory;
-		$time = round(microtime(true) - $this->getContext()->getContextDataByKey('time'), 3);
-
-		itrace('response-header', serialize($this->getContext()->getResponse()->getHeaders()));
-		itrace('response-cookies', serialize($this->getCookies()));
-		itrace('response-content', $this->getContext()->getResponse()->getBody()->getContents());
-		itrace('end-request', 'memory_usage: ' . round($memoryUsage/1024/1024, 2).'MB' . ', time: ' . $time . 's');
 	}
 }

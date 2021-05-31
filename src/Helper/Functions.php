@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -11,16 +11,7 @@
  */
 
 use Symfony\Component\VarDumper\VarDumper;
-use W7\App;
-use W7\Contract\Logger\LoggerFactoryInterface;
 use W7\Core\Exception\DumpException;
-
-if (!function_exists('itrace')) {
-	function itrace($group, $message, $context = []) {
-		$context['trace_group'] = $group;
-		App::getApp()->getContainer()->singleton(LoggerFactoryInterface::class)->channel('rangine-debugger')->debug($message, $context);
-	}
-}
 
 if (!function_exists('idd')) {
 	function idd(...$vars) {

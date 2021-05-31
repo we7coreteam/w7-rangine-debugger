@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -20,10 +20,7 @@ class MakeConnectionListener extends DatabaseListenerAbstract {
 		 * @var MakeConnectionEvent $event
 		 */
 		$event = $params[0];
-		$this->log($event);
-	}
-
-	protected function log($event) {
-		itrace('database', 'create ' . $event->name . ' connection');
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database', 'make_connection', 'create ' . $event->name . ' connection');
 	}
 }

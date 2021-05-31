@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -15,8 +15,11 @@ namespace W7\Debugger\Route;
 use W7\Core\Listener\ListenerAbstract;
 use W7\Core\Route\Event\RouteMatchedEvent;
 use W7\Core\Route\Route;
+use W7\Debugger\DebuggerTrait;
 
 class RouteMatchedListener extends ListenerAbstract {
+	use DebuggerTrait;
+
 	public function run(...$params) {
 		/**
 		 * @var RouteMatchedEvent $event
@@ -28,14 +31,10 @@ class RouteMatchedListener extends ListenerAbstract {
 
 	protected function log(RouteMatchedEvent $event) {
 		if ($event->route instanceof Route) {
-			$routeName = $event->route->name;
 			$routeMiddleware = $event->route->getMiddleware();
-			$routeModule = $event->route->module;
 			$routeHandler = $event->route->handler instanceof \Closure ? 'closure' : implode('@', $event->route->handler);
 		} else {
-			$routeName = $event->route['name'];
 			$routeMiddleware = $event->route['middleware'];
-			$routeModule = $event->route['module'];
 			$routeHandler = $event->route['controller'] instanceof \Closure ? 'closure' : $event->route['controller'] . '@' . $event->route['method'];
 		}
 
@@ -44,7 +43,10 @@ class RouteMatchedListener extends ListenerAbstract {
 			$middleWares[] = $item['class'] . ':arg[' . implode(',', $item['arg']) . ']';
 		}
 
-		itrace('route', 'name: ' . $routeName . ', module: ' . $routeModule . ', handler: ' . $routeHandler);
-		itrace('middleware', implode(',', $middleWares));
+		$debugger = $this->getDebugger();
+		$debugger->addTag('route', [
+			'handler' => $routeHandler,
+			'middleware' => $middleWares
+		]);
 	}
 }

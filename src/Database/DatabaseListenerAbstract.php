@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -14,13 +14,17 @@ namespace W7\Debugger\Database;
 
 use Illuminate\Database\Events\ConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
+use W7\Debugger\DebuggerTrait;
 
 abstract class DatabaseListenerAbstract extends ListenerAbstract {
+	use DebuggerTrait;
+
 	/**
+	 * @param $tagName
 	 * @param ConnectionEvent $event
-	 * @return  bool
+	 * @return bool
 	 */
-	protected function log($event) {
+	protected function log($tagName, $event) {
 		if ($event->connection->pretending()) {
 			return true;
 		}
@@ -41,6 +45,8 @@ abstract class DatabaseListenerAbstract extends ListenerAbstract {
 
 			$sql = preg_replace($regex, $binding, $sql, 1);
 		}
-		itrace('database', 'connection ' . $event->connectionName . ', ' . $sql);
+
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database', $tagName, $sql);
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -31,7 +31,6 @@ use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
 use W7\Debugger\Database\TransactionCommittedListener;
 use W7\Debugger\Database\TransactionRolledBackListener;
-use W7\Debugger\Log\TraceProcessor;
 use W7\Debugger\Pool\PopConnectionListener;
 use W7\Debugger\Pool\PushConnectionListener;
 use W7\Debugger\Pool\ResumeConnectionListener;
@@ -66,9 +65,13 @@ class ServiceProvider extends ProviderAbstract {
 				'path' => App::getApp()->getRuntimePath() . '/logs/trace.log',
 				'level' => 'debug',
 				'days' => 1,
-				'processor' => [SwooleProcessor::class, TraceProcessor::class]
+				'processor' => [SwooleProcessor::class]
 			]);
 		}
+
+		Debugger::registerLoggerResolver(function () {
+			return $this->logger->channel('rangine-debugger');
+		});
 	}
 
 	private function registerListener() {

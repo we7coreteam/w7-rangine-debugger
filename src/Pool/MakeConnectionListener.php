@@ -25,6 +25,6 @@ class MakeConnectionListener extends PoolListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag($event->type, $event->name, 'create connection for pool, idle count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
+		$debugger->addChildTag($event->type, 'make-connection-for-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
 	}
 }

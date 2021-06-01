@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -13,7 +13,7 @@
 namespace W7\Debugger;
 
 use W7\App;
-use W7\Core\Cache\Event\MakeConnectionEvent;
+use W7\Core\Cache\Event\AfterMakeConnectionEvent;
 use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
 use W7\Core\Database\Event\TransactionCommittedEvent;
@@ -24,9 +24,8 @@ use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
 use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
-use W7\Core\Route\Event\RouteMatchedEvent;
 use W7\Core\Server\ServerEvent;
-use W7\Debugger\Cache\MakeConnectionListener;
+use W7\Debugger\Cache\AfterMakeConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
 use W7\Debugger\Database\TransactionCommittedListener;
@@ -35,13 +34,12 @@ use W7\Debugger\Pool\PopConnectionListener;
 use W7\Debugger\Pool\PushConnectionListener;
 use W7\Debugger\Pool\ResumeConnectionListener;
 use W7\Debugger\Pool\SuspendConnectionListener;
-use W7\Debugger\Database\MakeConnectionListener as MakeDatabaseConnectionListener;
-use W7\Core\Database\Event\MakeConnectionEvent as MakeDatabaseConnectionEvent;
+use W7\Debugger\Database\AfterMakeConnectionListener as MakeDatabaseConnectionListener;
+use W7\Core\Database\Event\AfterMakeConnectionEvent as MakeDatabaseConnectionEvent;
 use W7\Core\Pool\Event\MakeConnectionEvent as PoolMakeConnectionEvent;
 use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
 use W7\Debugger\Request\AfterRequestListener;
 use W7\Debugger\Request\BeforeRequestListener;
-use W7\Debugger\Route\RouteMatchedListener;
 
 class ServiceProvider extends ProviderAbstract {
 	/**
@@ -76,8 +74,7 @@ class ServiceProvider extends ProviderAbstract {
 
 	private function registerListener() {
 		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
-		$this->getEventDispatcher()->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
-		$this->getEventDispatcher()->listen(MakeConnectionEvent::class, MakeConnectionListener::class);
+		$this->getEventDispatcher()->listen(AfterMakeConnectionEvent::class, AfterMakeConnectionListener::class);
 		$this->getEventDispatcher()->listen(MakeDatabaseConnectionEvent::class, MakeDatabaseConnectionListener::class);
 		$this->getEventDispatcher()->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
 		$this->getEventDispatcher()->listen(TransactionBeginningEvent::class, TransactionBeginningListener::class);

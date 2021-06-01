@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -25,6 +25,6 @@ class PopConnectionListener extends PoolListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag($event->type, $event->name, 'pop connection from pool, idle count ' . $event->pool->getIdleCount());
+		$debugger->addChildTag($event->type, 'pop-connection-from-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount());
 	}
 }

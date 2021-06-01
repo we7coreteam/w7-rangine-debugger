@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -20,6 +20,8 @@ class TransactionRolledBackListener extends DatabaseListenerAbstract {
 		 * @var TransactionRolledBackEvent $event
 		 */
 		$event = $params[0];
-		$this->log('transaction-rollback', $event);
+
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database', 'transaction-rollback', 'level ' . $event->connection->transactionLevel());
 	}
 }

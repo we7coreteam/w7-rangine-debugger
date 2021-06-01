@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -24,9 +24,13 @@ class BeforeRequestListener extends ListenerAbstract {
 		 * @var Request $request
 		 */
 		$request = $params[0];
+		$headers = $request->getHeaders();
+		foreach ($headers as &$header) {
+			$header = $header[0];
+		}
 
 		$debugger = $this->getDebugger();
-		$debugger->addTag('request-header', $request->getHeaders());
+		$debugger->addTag('request-header', $headers);
 		$debugger->addTag('request-data', [
 			'post' => $request->getParsedBody(),
 			'query' => $request->getQueryParams(),

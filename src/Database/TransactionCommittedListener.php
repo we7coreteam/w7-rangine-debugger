@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -20,6 +20,8 @@ class TransactionCommittedListener extends DatabaseListenerAbstract {
 		 * @var TransactionCommittedEvent $event
 		 */
 		$event = $params[0];
-		$this->log('transaction-commit', $event);
+
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database', 'transaction-commit', 'level ' . $event->connection->transactionLevel());
 	}
 }

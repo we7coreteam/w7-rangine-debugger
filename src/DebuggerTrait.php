@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -21,6 +21,16 @@ trait DebuggerTrait {
 		if (!$debugger = $this->getContext()->getContextDataByKey('debugger')) {
 			$debugger = new Debugger();
 			$this->getContext()->setContextDataByKey('debugger', $debugger);
+			if (isCo()) {
+				defer(function () use ($debugger) {
+					$message = '';
+					$request = $this->getContext()->getRequest();
+					if ($request) {
+						$message = ' url: ' . $request->getUri()->getPath() . ' method: ' . $request->getMethod() . "\n";
+					}
+					$debugger->handle($message);
+				});
+			}
 		}
 
 		return $debugger;

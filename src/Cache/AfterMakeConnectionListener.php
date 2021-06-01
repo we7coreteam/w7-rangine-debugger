@@ -12,20 +12,20 @@
 
 namespace W7\Debugger\Cache;
 
-use W7\Core\Cache\Event\MakeConnectionEvent;
+use W7\Core\Cache\Event\AfterMakeConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
 use W7\Debugger\DebuggerTrait;
 
-class MakeConnectionListener extends ListenerAbstract {
+class AfterMakeConnectionListener extends ListenerAbstract {
 	use DebuggerTrait;
 
 	public function run(...$params) {
 		/**
-		 * @var MakeConnectionEvent $event
+		 * @var AfterMakeConnectionEvent $event
 		 */
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('cache', 'make_connection', 'create ' . $event->name . ' connection');
+		$debugger->addChildTag('cache', 'make-connection', 'create ' . $event->name . ' connection');
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -20,6 +20,8 @@ class TransactionBeginningListener extends DatabaseListenerAbstract {
 		 * @var TransactionBeginningEvent $event
 		 */
 		$event = $params[0];
-		$this->log('transaction-begin', $event);
+
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database', 'transaction-begin', 'level ' . $event->connection->transactionLevel());
 	}
 }

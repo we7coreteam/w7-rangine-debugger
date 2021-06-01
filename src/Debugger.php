@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -35,7 +35,7 @@ class Debugger {
 		$this->addTag($tag, $tagInfo);
 	}
 
-	public function handle($message = '') {
+	public function handle($message = '', $context = []) {
 		if (!self::$loggerResolver) {
 			throw new \RuntimeException('logger resolver is null');
 		}
@@ -44,14 +44,14 @@ class Debugger {
 		 * @var LoggerInterface $logger
 		 */
 		$logger = $loggerResolver();
-		$logger->debug($message . $this->processItems($this->tags));
+		$logger->debug($message . $this->processItems($this->tags), $context);
 	}
 
 	private function processItems($items, $level = 0) {
 		$contents = '';
 		foreach ($items as $key => $item) {
 			if ($level === 0) {
-				$key = '[\'' . $key . "']\n";
+				$key = '[' . $key . "]\n";
 			} else {
 				$key = '\'' . $key . "': ";
 			}

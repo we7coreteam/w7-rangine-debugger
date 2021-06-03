@@ -15,12 +15,16 @@ namespace W7\Debugger\Request;
 use W7\Core\Listener\ListenerAbstract;
 use W7\Debugger\DebuggerTrait;
 use W7\Http\Message\Base\Cookie;
+use W7\Http\Message\Server\Response;
 
 class AfterRequestListener extends ListenerAbstract {
 	use DebuggerTrait;
 
 	public function run(...$params) {
-		$response = $this->getContext()->getResponse();
+		/**
+		 * @var Response $response
+		 */
+		$response = $params[1];
 		$headers = $response->getHeaders();
 		foreach ($headers as &$header) {
 			$header = implode(';', $header);

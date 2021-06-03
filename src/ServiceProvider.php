@@ -23,8 +23,8 @@ use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
 use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
+use W7\Core\Route\Event\RouteMatchedEvent;
 use W7\Core\Server\ServerEvent;
-use W7\Debugger\Cache\AfterMakeConnectionListener as AfterMakeCacheConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
 use W7\Debugger\Database\TransactionCommittedListener;
@@ -35,11 +35,13 @@ use W7\Debugger\Pool\ResumeConnectionListener;
 use W7\Debugger\Pool\SuspendConnectionListener;
 use W7\Debugger\Database\AfterMakeConnectionListener as AfterMakeDatabaseConnectionListener;
 use W7\Core\Database\Event\AfterMakeConnectionEvent as MakeDatabaseConnectionEvent;
+use W7\Debugger\Cache\AfterMakeConnectionListener as AfterMakeCacheConnectionListener;
 use W7\Core\Cache\Event\AfterMakeConnectionEvent as MakeCacheConnectionEvent;
 use W7\Core\Pool\Event\MakeConnectionEvent as PoolMakeConnectionEvent;
 use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
 use W7\Debugger\Request\AfterRequestListener;
 use W7\Debugger\Request\BeforeRequestListener;
+use W7\Debugger\Route\RouteMatchedListener;
 
 class ServiceProvider extends ProviderAbstract {
 	/**
@@ -74,6 +76,7 @@ class ServiceProvider extends ProviderAbstract {
 
 	private function registerListener() {
 		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
+		$this->getEventDispatcher()->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
 		$this->getEventDispatcher()->listen(MakeCacheConnectionEvent::class, AfterMakeCacheConnectionListener::class);
 		$this->getEventDispatcher()->listen(MakeDatabaseConnectionEvent::class, AfterMakeDatabaseConnectionListener::class);
 		$this->getEventDispatcher()->listen(QueryExecutedEvent::class, QueryExecutedListener::class);

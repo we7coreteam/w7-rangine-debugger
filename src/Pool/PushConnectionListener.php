@@ -25,6 +25,6 @@ class PushConnectionListener extends PoolListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag($event->type, 'push-connection-to-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
+		$debugger->addChildTag($event->type . '-'.  $event->name, 'push-connection-to-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount() . '. busy count ' . $event->pool->getBusyCount());
 	}
 }

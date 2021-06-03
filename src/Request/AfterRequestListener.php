@@ -20,31 +20,27 @@ class AfterRequestListener extends ListenerAbstract {
 	use DebuggerTrait;
 
 	public function run(...$params) {
-		$headers = $this->getContext()->getResponse()->getHeaders();
+		$response = $this->getContext()->getResponse();
+		$headers = $response->getHeaders();
 		foreach ($headers as &$header) {
 			$header = implode(';', $header);
 		}
-
-		$debugger = $this->getDebugger();
-		$debugger->addTag('response-header', $headers);
-		$debugger->addTag('response-cookie', $this->getCookies());
-		$debugger->addTag('response-content', $this->getContext()->getResponse()->getBody()->getContents());
-
-		if (!isCo()) {
-			$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
-			$debugger->handle($message);
-		}
-	}
-
-	public function getCookies() {
 		$cookies = [];
 		/**
 		 * @var Cookie $cookie
 		 */
-		foreach ((array)$this->getContext()->getResponse()->getCookies() as $name => $cookie) {
+		foreach ((array)$response->getCookies() as $name => $cookie) {
 			$cookies[] = (string)$cookie;
 		}
+		$responseContent = $response->getBody()->getContents();
+		$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
 
-		return $cookies;
+		$debugger = $this->getDebugger();
+		$debugger->addTag('response-header', $headers);
+		$debugger->addTag('response-cookie', $cookies);
+		$debugger->addTag('response-content', $responseContent);
+		if (!isCo()) {
+			$debugger->handle($message);
+		}
 	}
 }

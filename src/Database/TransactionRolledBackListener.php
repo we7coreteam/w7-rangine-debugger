@@ -22,6 +22,6 @@ class TransactionRolledBackListener extends DatabaseListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('database', 'transaction-rollback', 'level ' . $event->connection->transactionLevel());
+		$debugger->addChildTag('database-' . $event->connectionName, 'query', 'transaction-rollback level ' . $event->connection->transactionLevel());
 	}
 }

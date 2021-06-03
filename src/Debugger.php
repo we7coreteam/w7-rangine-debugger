@@ -31,7 +31,13 @@ class Debugger {
 
 	public function addChildTag($tag, $childTag, $value) {
 		$tagInfo = $this->tags[$tag] ?? [];
-		$tagInfo[$childTag] = $value;
+		if (!empty($tagInfo[$childTag])) {
+			$tagInfo[$childTag] = (array)$tagInfo[$childTag];
+			$tagInfo[$childTag][] = $value;
+		} else {
+			$tagInfo[$childTag] = $value;
+		}
+
 		$this->addTag($tag, $tagInfo);
 	}
 
@@ -51,7 +57,7 @@ class Debugger {
 		$contents = '';
 		foreach ($items as $key => $item) {
 			if ($level === 0) {
-				$key = '[' . $key . "]\n";
+				$key = '[' . strtoupper($key) . "]\n";
 			} else {
 				$key = '\'' . $key . "': ";
 			}

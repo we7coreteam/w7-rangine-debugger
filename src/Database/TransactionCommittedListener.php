@@ -22,6 +22,6 @@ class TransactionCommittedListener extends DatabaseListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('database', 'transaction-commit', 'level ' . $event->connection->transactionLevel());
+		$debugger->addChildTag('database-' . $event->connectionName, 'query', 'transaction-commit level ' . $event->connection->transactionLevel());
 	}
 }

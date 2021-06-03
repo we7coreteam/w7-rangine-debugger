@@ -25,6 +25,6 @@ class SuspendConnectionListener extends PoolListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag($event->type, 'suspend-connection-from-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount() . '. wait count ' . $event->pool->getWaitCount());
+		$debugger->addChildTag($event->type . '-'.  $event->name, 'suspend-connection-from-pool', 'connection ' . $event->name . ', idle count ' . $event->pool->getIdleCount() . '. wait count ' . $event->pool->getWaitCount());
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WeEngine Api System
+ * Rangine debugger
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -22,6 +22,6 @@ class AfterMakeConnectionListener extends DatabaseListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('database', 'make-connection', 'create ' . $event->name . ' connection');
+		$debugger->addChildTag('database-' . $event->name, 'make-connection', 'create ' . $event->name . ' connection');
 	}
 }

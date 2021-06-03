@@ -22,6 +22,6 @@ class TransactionBeginningListener extends DatabaseListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('database', 'transaction-begin', 'level ' . $event->connection->transactionLevel());
+		$debugger->addChildTag('database-' . $event->connectionName, 'query', 'transaction-begin level ' . $event->connection->transactionLevel());
 	}
 }

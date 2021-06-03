@@ -13,37 +13,34 @@
 namespace W7\Debugger\Request;
 
 use W7\Core\Listener\ListenerAbstract;
+use W7\Debugger\DebuggerTrait;
+use W7\Http\Message\Base\Cookie;
 
 class AfterRequestListener extends ListenerAbstract {
+	use DebuggerTrait;
+
 	public function run(...$params) {
-		$this->log();
-	}
-
-	public function getCookies() {
-		$cookies = [];
-		foreach ((array)$this->getContext()->getResponse()->getCookies() as $name => $cookie) {
-			$cookies[] = [
-				'name' => $cookie->getName(),
-				'value' => $cookie->getValue() ? : 1,
-				'expire' => $cookie->getExpiresTime(),
-				'path' => $cookie->getPath(),
-				'domain' => $cookie->getDomain(),
-				'secure' => $cookie->isSecure(),
-				'http_only' => $cookie->isHttpOnly()
-			];
+		$response = $this->getContext()->getResponse();
+		$headers = $response->getHeaders();
+		foreach ($headers as &$header) {
+			$header = implode(';', $header);
 		}
+		$cookies = [];
+		/**
+		 * @var Cookie $cookie
+		 */
+		foreach ((array)$response->getCookies() as $name => $cookie) {
+			$cookies[] = (string)$cookie;
+		}
+		$responseContent = $response->getBody()->getContents();
+		$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
 
-		return $cookies;
-	}
-
-	protected function log() {
-		$beginMemory = $this->getContext()->getContextDataByKey('memory_usage');
-		$memoryUsage = memory_get_usage() - $beginMemory;
-		$time = round(microtime(true) - $this->getContext()->getContextDataByKey('time'), 3);
-
-		itrace('response-header', serialize($this->getContext()->getResponse()->getHeaders()));
-		itrace('response-cookies', serialize($this->getCookies()));
-		itrace('response-content', $this->getContext()->getResponse()->getBody()->getContents());
-		itrace('end-request', 'memory_usage: ' . round($memoryUsage/1024/1024, 2).'MB' . ', time: ' . $time . 's');
+		$debugger = $this->getDebugger();
+		$debugger->addTag('response-header', $headers);
+		$debugger->addTag('response-cookie', $cookies);
+		$debugger->addTag('response-content', $responseContent);
+		if (!isCo()) {
+			$debugger->handle($message);
+		}
 	}
 }

@@ -20,10 +20,8 @@ class AfterMakeConnectionListener extends DatabaseListenerAbstract {
 		 * @var AfterMakeConnectionEvent $event
 		 */
 		$event = $params[0];
-		$this->log($event);
-	}
 
-	protected function log($event) {
-		itrace('database', 'create ' . $event->name . ' connection');
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('database-' . $event->name, 'make-connection', 'create ' . $event->name . ' connection');
 	}
 }

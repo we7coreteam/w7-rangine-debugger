@@ -13,7 +13,6 @@
 namespace W7\Debugger;
 
 use W7\App;
-use W7\Core\Database\Event\AfterMakeConnectionEvent;
 use W7\Core\Database\Event\QueryExecutedEvent;
 use W7\Core\Database\Event\TransactionBeginningEvent;
 use W7\Core\Database\Event\TransactionCommittedEvent;
@@ -24,24 +23,23 @@ use W7\Core\Pool\Event\PushConnectionEvent;
 use W7\Core\Pool\Event\ResumeConnectionEvent;
 use W7\Core\Pool\Event\SuspendConnectionEvent;
 use W7\Core\Provider\ProviderAbstract;
-use W7\Core\Route\Event\RouteMatchedEvent;
 use W7\Core\Server\ServerEvent;
 use W7\Debugger\Cache\AfterMakeConnectionListener as AfterMakeCacheConnectionListener;
 use W7\Debugger\Database\QueryExecutedListener;
 use W7\Debugger\Database\TransactionBeginningListener;
 use W7\Debugger\Database\TransactionCommittedListener;
 use W7\Debugger\Database\TransactionRolledBackListener;
-use W7\Debugger\Log\TraceProcessor;
 use W7\Debugger\Pool\PopConnectionListener;
 use W7\Debugger\Pool\PushConnectionListener;
 use W7\Debugger\Pool\ResumeConnectionListener;
 use W7\Debugger\Pool\SuspendConnectionListener;
 use W7\Debugger\Database\AfterMakeConnectionListener as AfterMakeDatabaseConnectionListener;
+use W7\Core\Database\Event\AfterMakeConnectionEvent as MakeDatabaseConnectionEvent;
+use W7\Core\Cache\Event\AfterMakeConnectionEvent as MakeCacheConnectionEvent;
 use W7\Core\Pool\Event\MakeConnectionEvent as PoolMakeConnectionEvent;
 use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
 use W7\Debugger\Request\AfterRequestListener;
 use W7\Debugger\Request\BeforeRequestListener;
-use W7\Debugger\Route\RouteMatchedListener;
 
 class ServiceProvider extends ProviderAbstract {
 	/**
@@ -65,16 +63,19 @@ class ServiceProvider extends ProviderAbstract {
 				'path' => App::getApp()->getRuntimePath() . '/logs/trace.log',
 				'level' => 'debug',
 				'days' => 1,
-				'processor' => [SwooleProcessor::class, TraceProcessor::class]
+				'processor' => [SwooleProcessor::class]
 			]);
 		}
+
+		Debugger::registerLoggerResolver(function () {
+			return $this->logger->channel('rangine-debugger');
+		});
 	}
 
 	private function registerListener() {
 		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
-		$this->getEventDispatcher()->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
-		$this->getEventDispatcher()->listen(\W7\Core\Cache\Event\AfterMakeConnectionEvent::class, AfterMakeCacheConnectionListener::class);
-		$this->getEventDispatcher()->listen(AfterMakeConnectionEvent::class, AfterMakeDatabaseConnectionListener::class);
+		$this->getEventDispatcher()->listen(MakeCacheConnectionEvent::class, AfterMakeCacheConnectionListener::class);
+		$this->getEventDispatcher()->listen(MakeDatabaseConnectionEvent::class, AfterMakeDatabaseConnectionListener::class);
 		$this->getEventDispatcher()->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
 		$this->getEventDispatcher()->listen(TransactionBeginningEvent::class, TransactionBeginningListener::class);
 		$this->getEventDispatcher()->listen(TransactionCommittedEvent::class, TransactionCommittedListener::class);

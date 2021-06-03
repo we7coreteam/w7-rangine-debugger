@@ -14,17 +14,18 @@ namespace W7\Debugger\Cache;
 
 use W7\Core\Cache\Event\AfterMakeConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
+use W7\Debugger\DebuggerTrait;
 
 class AfterMakeConnectionListener extends ListenerAbstract {
+	use DebuggerTrait;
+
 	public function run(...$params) {
 		/**
 		 * @var AfterMakeConnectionEvent $event
 		 */
 		$event = $params[0];
-		$this->log($event);
-	}
 
-	protected function log(AfterMakeConnectionEvent $event) {
-		itrace('cache', 'create ' . $event->name . ' connection');
+		$debugger = $this->getDebugger();
+		$debugger->addChildTag('cache-' . $event->name, 'make-connection', 'create ' . $event->name . ' connection');
 	}
 }

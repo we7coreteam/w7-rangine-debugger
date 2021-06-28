@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -36,14 +36,13 @@ class AfterRequestListener extends ListenerAbstract {
 		foreach ((array)$response->getCookies() as $name => $cookie) {
 			$cookies[] = (string)$cookie;
 		}
-		$responseContent = $response->getBody()->getContents();
-		$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
 
 		$debugger = $this->getDebugger();
 		$debugger->addTag('response-header', $headers);
 		$debugger->addTag('response-cookie', $cookies);
-		$debugger->addTag('response-content', $responseContent);
+		$debugger->addTag('response-content', $response->getBody()->getContents());
 		if (!isCo()) {
+			$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
 			$debugger->handle($message);
 		}
 	}

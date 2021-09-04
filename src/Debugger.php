@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -13,11 +13,8 @@
 namespace W7\Debugger;
 
 use Psr\Log\LoggerInterface;
-use W7\Core\Helper\Traiter\InstanceTraiter;
 
 class Debugger {
-	use InstanceTraiter;
-
 	protected $tags = [];
 	protected static $loggerResolver;
 

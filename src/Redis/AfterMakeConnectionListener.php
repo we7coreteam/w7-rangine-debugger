@@ -10,10 +10,10 @@
  * visited https://www.w7.cc for more details
  */
 
-namespace W7\Debugger\Cache;
+namespace W7\Debugger\Redis;
 
-use W7\Core\Cache\Event\AfterMakeConnectionEvent;
 use W7\Core\Listener\ListenerAbstract;
+use W7\Core\Redis\Event\AfterMakeConnectionEvent;
 use W7\Debugger\DebuggerTrait;
 
 class AfterMakeConnectionListener extends ListenerAbstract {
@@ -26,6 +26,6 @@ class AfterMakeConnectionListener extends ListenerAbstract {
 		$event = $params[0];
 
 		$debugger = $this->getDebugger();
-		$debugger->addChildTag('cache-' . $event->name, 'make-connection', 'create ' . $event->name . ' connection');
+		$debugger->addChildTag('redis-' . $event->name, 'make-connection', 'create ' . $event->name . ' connection');
 	}
 }

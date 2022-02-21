@@ -35,8 +35,8 @@ use W7\Debugger\Pool\ResumeConnectionListener;
 use W7\Debugger\Pool\SuspendConnectionListener;
 use W7\Debugger\Database\AfterMakeConnectionListener as AfterMakeDatabaseConnectionListener;
 use W7\Core\Database\Event\AfterMakeConnectionEvent as MakeDatabaseConnectionEvent;
-use W7\Debugger\Cache\AfterMakeConnectionListener as AfterMakeCacheConnectionListener;
-use W7\Core\Cache\Event\AfterMakeConnectionEvent as MakeCacheConnectionEvent;
+use W7\Debugger\Redis\AfterMakeConnectionListener as AfterMakeRedisConnectionListener;
+use W7\Core\Redis\Event\AfterMakeConnectionEvent as MakeRedisConnectionEvent;
 use W7\Core\Pool\Event\MakeConnectionEvent as PoolMakeConnectionEvent;
 use W7\Debugger\Pool\MakeConnectionListener as PoolMakeConnectionListener;
 use W7\Debugger\Request\AfterRequestListener;
@@ -77,7 +77,7 @@ class ServiceProvider extends ProviderAbstract {
 	private function registerListener() {
 		$this->getEventDispatcher()->listen(ServerEvent::ON_USER_BEFORE_REQUEST, BeforeRequestListener::class);
 		$this->getEventDispatcher()->listen(RouteMatchedEvent::class, RouteMatchedListener::class);
-		$this->getEventDispatcher()->listen(MakeCacheConnectionEvent::class, AfterMakeCacheConnectionListener::class);
+		$this->getEventDispatcher()->listen(MakeRedisConnectionEvent::class, AfterMakeRedisConnectionListener::class);
 		$this->getEventDispatcher()->listen(MakeDatabaseConnectionEvent::class, AfterMakeDatabaseConnectionListener::class);
 		$this->getEventDispatcher()->listen(QueryExecutedEvent::class, QueryExecutedListener::class);
 		$this->getEventDispatcher()->listen(TransactionBeginningEvent::class, TransactionBeginningListener::class);

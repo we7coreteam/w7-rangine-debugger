@@ -11,7 +11,7 @@
  */
 
 use Symfony\Component\VarDumper\VarDumper;
-use W7\Core\Exception\DumpException;
+use W7\Debugger\Exception\DumpException;
 
 if (!function_exists('idd')) {
 	function idd(...$vars) {

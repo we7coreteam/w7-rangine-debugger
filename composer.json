@@ -28,5 +28,12 @@
 				"W7\\Debugger\\ServiceProvider"
 			]
 		}
+	},
+	"config": {
+		"allow-plugins": {
+			"funkjedi/composer-include-files": true,
+			"w7/php-cs-fixer": true,
+			"w7/rangine-package-plugin": true
+		}
 	}
 }

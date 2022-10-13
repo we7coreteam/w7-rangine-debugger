@@ -21,16 +21,6 @@ trait DebuggerTrait {
 		if (!$debugger = $this->getContext()->getContextDataByKey('debugger')) {
 			$debugger = new Debugger();
 			$this->getContext()->setContextDataByKey('debugger', $debugger);
-			if (isCo()) {
-				$this->getContext()->defer(function () use ($debugger) {
-					$message = '';
-					$request = $this->getContext()->getRequest();
-					if ($request) {
-						$message = ' url: ' . $request->getUri()->getPath() . ' method: ' . $request->getMethod() . "\n";
-					}
-					$debugger->handle($message);
-				});
-			}
 		}
 
 		return $debugger;

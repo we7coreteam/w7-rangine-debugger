@@ -41,9 +41,5 @@ class AfterRequestListener extends ListenerAbstract {
 		$debugger->addTag('response-header', $headers);
 		$debugger->addTag('response-cookie', $cookies);
 		$debugger->addTag('response-content', $response->getBody()->getContents());
-		if (!isCo()) {
-			$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
-			$debugger->handle($message);
-		}
 	}
 }

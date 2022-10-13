@@ -15,11 +15,17 @@ namespace W7\Debugger;
 use Psr\Log\LoggerInterface;
 
 class Debugger {
+	protected $name = "\n";
 	protected $tags = [];
 	protected static $loggerResolver;
+	protected $hasHandle = false;
 
 	public static function registerLoggerResolver(\Closure $resolver) {
 		self::$loggerResolver = $resolver;
+	}
+
+	public function setName($name) {
+		$this->name = $name;
 	}
 
 	public function addTag($name, $value) {
@@ -38,7 +44,12 @@ class Debugger {
 		$this->addTag($tag, $tagInfo);
 	}
 
-	public function handle($message = '', $context = []) {
+	public function handle() {
+		if ($this->hasHandle) {
+			return;
+		}
+
+		$this->hasHandle = true;
 		if (!self::$loggerResolver) {
 			throw new \RuntimeException('logger resolver is null');
 		}
@@ -47,7 +58,7 @@ class Debugger {
 		 * @var LoggerInterface $logger
 		 */
 		$logger = $loggerResolver();
-		$logger->debug($message . $this->processItems($this->tags), $context);
+		$logger->debug($this->name . $this->processItems($this->tags));
 	}
 
 	private function processItems($items, $level = 0) {
@@ -70,5 +81,9 @@ class Debugger {
 		}
 
 		return $contents;
+	}
+
+	public function __destruct() {
+		$this->handle();
 	}
 }

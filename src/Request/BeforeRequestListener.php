@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -30,6 +30,8 @@ class BeforeRequestListener extends ListenerAbstract {
 		}
 
 		$debugger = $this->getDebugger();
+		$message = ' url: ' . $this->getContext()->getRequest()->getUri()->getPath() . ' method: ' . $this->getContext()->getRequest()->getMethod() . "\n";
+		$debugger->setName($message);
 		$debugger->addTag('request-header', $headers);
 		$debugger->addTag('request-data', [
 			'post' => $request->getParsedBody(),

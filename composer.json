@@ -9,7 +9,7 @@
 	"require": {
 		"php": ">=7.1.0",
 		"w7/rangine": "*",
-		"symfony/var-dumper": "^4.1"
+		"symfony/var-dumper": "^6.2"
 	},
 	"require-dev": {
 		"w7/php-cs-fixer": "*"

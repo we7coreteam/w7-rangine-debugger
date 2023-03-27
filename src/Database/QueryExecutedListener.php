@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine debugger
+ * WeEngine Api System
  *
  * (c) We7Team 2019 <https://www.w7.cc>
  *
@@ -27,6 +27,9 @@ class QueryExecutedListener extends DatabaseListenerAbstract {
 		$sql = $event->sql ?? '';
 		$bindings = (array) (empty($event->bindings) ? [] : $event->bindings);
 		foreach ($bindings as $key => $binding) {
+			if (is_null($binding)) {
+				continue;
+			}
 			// This regex matches placeholders only, not the question marks,
 			// nested in quotes, while we iterate through the bindings
 			// and substitute placeholders by suitable values.
